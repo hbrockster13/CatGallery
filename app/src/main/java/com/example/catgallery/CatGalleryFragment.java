@@ -59,8 +59,6 @@ public class CatGalleryFragment extends Fragment
         mRecyclerView = (RecyclerView) v.findViewById(R.id.app_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-
-
         return v;
     }
 }
