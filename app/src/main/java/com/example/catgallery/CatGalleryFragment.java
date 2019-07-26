@@ -1,8 +1,11 @@
 package com.example.catgallery;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -108,7 +111,17 @@ public class CatGalleryFragment extends Fragment
         setRetainInstance(true);
         new FetchItemsTask().execute();
 
-        mThumbnailDownloader = new ThumbnailDownloader<>();
+        Handler responseHandler = new Handler();
+        mThumbnailDownloader = new ThumbnailDownloader<>(responseHandler);
+        mThumbnailDownloader.setThumbnailDownloaderListener(new ThumbnailDownloader.ThumbnailDownloadListener<CatHolder>()
+        {
+            @Override
+            public void onThumbnailDownloaded(CatHolder target, Bitmap thumbnail)
+            {
+                Drawable drawable = new BitmapDrawable(getResources(), thumbnail);
+                target.bindDrawable(drawable);
+            }
+        });
         mThumbnailDownloader.start();
         mThumbnailDownloader.getLooper();
         Log.i(TAG, "The background thread has started.");
@@ -129,6 +142,12 @@ public class CatGalleryFragment extends Fragment
         super.onDestroy();
         mThumbnailDownloader.quit();
         Log.i(TAG, "Backgorund Thread destroyed");
+    }
+    @Override
+    public void onDestroyView()
+    {
+        super.onDestroyView();
+        mThumbnailDownloader.clearQueue();
     }
     private void setUpAdapter()
     {
