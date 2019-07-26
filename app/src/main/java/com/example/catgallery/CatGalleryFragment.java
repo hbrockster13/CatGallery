@@ -56,7 +56,7 @@ public class CatGalleryFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View v = inflater.inflate(R.layout.fragment_cat_gallery, container, false);
-        mRecyclerView = (RecyclerView) v.findViewById(R.id.app_recycler_view);
+        mRecyclerView = (RecyclerView) v.findViewById(R.id.cat_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         return v;

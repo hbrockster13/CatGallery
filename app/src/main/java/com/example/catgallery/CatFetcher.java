@@ -1,5 +1,8 @@
 package com.example.catgallery;
 
+import android.net.Uri;
+import android.util.Log;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,6 +51,25 @@ public class CatFetcher
     public String getURLString(String urlSpec ) throws IOException
     {
         return new String(getURLBytes(urlSpec));
+    }
+
+    public void fetchItem()
+    {
+        try
+        {
+            String url = Uri.parse("https://github.com/hbrockster13/CatGallery.git")
+                    .buildUpon()
+                    .appendQueryParameter("size", "thumb")
+                    .appendQueryParameter("limit", "100")
+                    .build().toString();
+
+            String jsonString = getURLString(url);
+            Log.i(TAG, "Recevied JSON: " + jsonString);
+        }
+        catch (IOException ieo)
+        {
+            Log.e(TAG, "Failed to Recevied JSON: " + ieo);
+        }
     }
 
 }
